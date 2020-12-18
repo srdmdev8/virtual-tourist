@@ -21,8 +21,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
     
     fileprivate func setUpFetchedResultsController() {
         let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.sortDescriptors = []
         
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "pins")
         fetchedResultsController.delegate = self
@@ -38,20 +37,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
         
         // Get long press recognition
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPress(longPress:)))
-        longPress.minimumPressDuration = 1.5
         
         mapView.addGestureRecognizer(longPress)
-        
-        guard let mapPins = fetchedResultsController?.fetchedObjects else {
-            return
-        }
-        
-        for pin in mapPins {
-            let storedAnnotation = MKPointAnnotation()
-            storedAnnotation.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
-            
-            self.mapView.addAnnotation(storedAnnotation)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,12 +47,13 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
         mapView.delegate = self
         
         // Check if there is a saved map location to start
-//        if let mapRegion = UserDefaults.standard.dictionary(forKey: "mapRegion") as [String: AnyObject]? {
-//            if let savedRegion = MKCoordinateRegion(decode: mapRegion) {
-//                mapView.region = savedRegion
-//            }
-//        }
+        getSavedMapLocation()
+        
+        // Fetch data via fetchedResultsController
         setUpFetchedResultsController()
+        
+        // Get saved pins
+        getSavedMapPins()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -90,7 +78,6 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
         let pin = Pin(context: dataController.viewContext)
         pin.latitude = coordinate.latitude
         pin.longitude = coordinate.longitude
-        pin.creationDate = Date()
         try? dataController.viewContext.save()
     }
     
@@ -104,16 +91,12 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
         if annotationView == nil {
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             annotationView!.canShowCallout = true
+//            annotationView!.appear = true
         } else {
             annotationView!.annotation = annotation
         }
 
         return annotationView
-    }
-    
-    @objc func pinWasTapped(_ gesture: UITapGestureRecognizer) {
-        let pinView = gesture.view as! MKPinAnnotationView
-        performSegue(withIdentifier: "ViewPinPhotos", sender: pinView)
     }
     
     private func mapViewRegionDidChangeFromUserInteraction() -> Bool {
@@ -128,20 +111,57 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
         }
         return false
     }
-    
-    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-        mapChangedFromUserInteraction = mapViewRegionDidChangeFromUserInteraction()
-        if (mapChangedFromUserInteraction) {
-            // user changed map region
-        }
-    }
 
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         print("regionDidChangeAnimated")
         print("mapChangedFromUserInteraction: \(mapChangedFromUserInteraction)")
+        mapChangedFromUserInteraction = mapViewRegionDidChangeFromUserInteraction()
         if (mapChangedFromUserInteraction) {
-            print(mapView.region)
-//            UserDefaults.standard.setValue(mapView.region.encode, forKey: "mapRegion")
+            print(mapView.centerCoordinate)
+            print(mapView.region.span)
+            UserDefaults.standard.setValue(mapView.centerCoordinate.latitude, forKey: "latitude")
+            UserDefaults.standard.setValue(mapView.centerCoordinate.longitude, forKey: "longitude")
+            UserDefaults.standard.setValue(mapView.region.span.latitudeDelta, forKey: "latitudeDelta")
+            UserDefaults.standard.setValue(mapView.region.span.longitudeDelta, forKey: "longitudeDelta")
+        }
+    }
+    
+    func getSavedMapPins() {
+        // Get map pins from fetchedResultsController
+        guard let mapPins = fetchedResultsController?.fetchedObjects else {
+            return
+        }
+        
+        // Loop through pins and add them to map
+        for pin in mapPins {
+            let storedAnnotation = MKPointAnnotation()
+            storedAnnotation.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+            
+            self.mapView.addAnnotation(storedAnnotation)
+        }
+    }
+    
+    func getSavedMapLocation() {
+        // Get lat/long values from UserDefaults
+        let latitude = UserDefaults.standard.value(forKey: "latitude") as? Double
+        let longitude = UserDefaults.standard.value(forKey: "longitude") as? Double
+        let latitudeDelta = UserDefaults.standard.value(forKey: "latitudeDelta") as? Double
+        let longitudeDelta = UserDefaults.standard.value(forKey: "longitudeDelta") as? Double
+        
+        if latitude != nil && longitude != nil {
+            mapView.centerCoordinate.latitude = latitude!
+            mapView.centerCoordinate.longitude = longitude!
+        }
+        
+        if latitudeDelta != nil && longitudeDelta != nil {
+            mapView.region.span.latitudeDelta = latitudeDelta!
+            mapView.region.span.longitudeDelta = longitudeDelta!
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if let annotation = view.annotation as? MKPointAnnotation {
+            performSegue(withIdentifier: "ViewPinPhotos", sender: annotation)
         }
     }
     
@@ -151,36 +171,26 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ViewPinPhotos" {
             if let vc = segue.destination as? PhotoAlbumViewController {
-                vc.coordinate = (sender as! MKPinAnnotationView).annotation!.coordinate
+                vc.coordinate = (sender as! MKPointAnnotation).coordinate
                 vc.dataController = dataController
             }
         }
     }
 }
 
-//extension MKCoordinateRegion {
-//
-//    var encode: [String: AnyObject] {
-//        return ["center":
-//                   ["latitude": self.center.latitude,
-//                   "longitude": self.center.longitude],
-//                "span":
-//                   ["latitudeDelta": self.span.latitudeDelta,
-//                    "longitudeDelta": self.span.longitudeDelta]]
-//    }
-//
-//    init?(decode: [String: AnyObject]) {
-//
-//        guard let center = decode["center"] as? [String: AnyObject],
-//            let latitude = center["latitude"] as? Double,
-//            let longitude = center["longitude"] as? Double,
-//            let span = decode["span"] as? [String: AnyObject],
-//            let latitudeDelta = span["latitudeDelta"] as? Double,
-//            let longitudeDelta = span["longitudeDelta"] as? Double
-//        else { return nil }
-//
-//
-//        self.center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-//        self.span = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
-//    }
-//}
+extension TravelLocationsMapViewController {
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            if let pin = anObject as? Pin {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate.latitude = pin.latitude
+                annotation.coordinate.longitude = pin.longitude
+                mapView.addAnnotation(annotation)
+            }
+        default:
+            break
+        }
+    }
+}

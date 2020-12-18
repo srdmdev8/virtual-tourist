@@ -13,11 +13,30 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, NSFetchedRe
     
     @IBOutlet weak var mapView: MKMapView!
     
+    @IBOutlet weak var photoCollectionView: UICollectionView!
+    
+    var pin: Pin!
+    
     var dataController: DataController!
     
     var fetchedResultsController: NSFetchedResultsController<Photo>!
     
     var coordinate: CLLocationCoordinate2D!
+    
+    fileprivate func setUpFetchedResultsController() {
+        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+        let predicate = NSPredicate(format: "pin == %@", pin)
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = []
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "\(pin) photos")
+        fetchedResultsController.delegate = self
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +47,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, NSFetchedRe
         super.viewWillAppear(animated)
         // Set map view delegate to the view controller
         mapView.delegate = self
+        
+        // Fetch data via fetchedResultsController
+        setUpFetchedResultsController()
         
         addPinToMap()
     }
@@ -61,5 +83,36 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, NSFetchedRe
         let regionRadius: CLLocationDistance = 1000
         let coordinateRegion = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius * 2.0)
         mapView.setRegion(coordinateRegion, animated: false)
+    }
+    
+    @IBAction func getNewPhotoAlbum(_ sender: Any) {
+        
+    }
+    
+    //    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumViewControllerCell", for: indexPath) as! PhotoAlbumViewControllerCell
+//        var imageView: UIImageView
+//
+//        // Set the image
+//        cell.memeImageView?.image = meme.memedImage
+//
+//        return cell
+//    }
+}
+
+extension PhotoAlbumViewController {
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            self.photoCollectionView.insertItems(at: [newIndexPath!])
+//            let cell = photoCollectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumViewControllerCell", for: newIndexPath!) as! PhotoAlbumViewControllerCell
+//            if let photo = anObject as? Photo {
+                
+//            }
+        default:
+            break
+        }
     }
 }

@@ -48,6 +48,7 @@
                     <navigationItem key="navigationItem" id="cTp-EX-d2m"/>
                     <connections>
                         <outlet property="mapView" destination="sXb-MX-3fC" id="lDd-zw-e7I"/>
+                        <segue destination="Y43-NV-0fF" kind="show" identifier="ViewPinPhotos" id="6Eg-i0-X1r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -77,7 +78,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="AsE-m5-Um1">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="AsE-m5-Um1" customClass="PhotoAlbumViewControllerCell" customModule="VirtualTourist" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="7vD-9Y-QpK">
@@ -90,27 +91,29 @@
                                                 </imageView>
                                             </subviews>
                                         </collectionViewCellContentView>
+                                        <connections>
+                                            <outlet property="photoImageView" destination="EO9-8j-7Xn" id="QjM-XU-2UR"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="366-gv-dbz">
-                                <rect key="frame" x="0.0" y="818" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="O3l-Yz-XzZ"/>
-                                    <barButtonItem title="New Collection" width="42" id="Gjm-gc-Yg0"/>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="scL-Zl-qh3"/>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="YHH-l8-sq8"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="qr6-wR-Nnh">
-                        <barButtonItem key="backBarButtonItem" title="Map" id="18O-Lz-qUv"/>
-                    </navigationItem>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Bl6-Ng-WVS"/>
+                        <barButtonItem title="New Collection" id="D4D-rS-CWh">
+                            <connections>
+                                <action selector="getNewPhotoAlbum:" destination="Y43-NV-0fF" id="3og-2m-lMg"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ued-vl-oKv"/>
+                    </toolbarItems>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="mapView" destination="l82-8S-Z4A" id="ZR3-np-Frr"/>
+                        <outlet property="photoCollectionView" destination="zVR-8A-Qqj" id="iSV-r4-KCm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fCz-Sv-y22" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

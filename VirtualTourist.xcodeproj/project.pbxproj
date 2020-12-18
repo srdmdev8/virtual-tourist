@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		351C8BF6258D3DFB007ACA21 /* PhotoAlbumViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351C8BF5258D3DFB007ACA21 /* PhotoAlbumViewControllerCell.swift */; };
 		354E65C0258B393E0014C1E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E65BF258B393E0014C1E1 /* AppDelegate.swift */; };
 		354E65C2258B393E0014C1E1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E65C1258B393E0014C1E1 /* SceneDelegate.swift */; };
 		354E65C4258B393E0014C1E1 /* TravelLocationsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E65C3258B393E0014C1E1 /* TravelLocationsMapViewController.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		351C8BF5258D3DFB007ACA21 /* PhotoAlbumViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewControllerCell.swift; sourceTree = "<group>"; };
 		354E65BC258B393E0014C1E1 /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		354E65BF258B393E0014C1E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		354E65C1258B393E0014C1E1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +49,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		351C8BF3258D3D80007ACA21 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				351C8BF4258D3DCF007ACA21 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		351C8BF4258D3DCF007ACA21 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				351C8BF5258D3DFB007ACA21 /* PhotoAlbumViewControllerCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		354E65B3258B393E0014C1E1 = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +84,7 @@
 		354E65BE258B393E0014C1E1 /* VirtualTourist */ = {
 			isa = PBXGroup;
 			children = (
+				351C8BF3258D3D80007ACA21 /* Views */,
 				354E65D7258B3A260014C1E1 /* Storyboards */,
 				354E65D6258B3A150014C1E1 /* Assets */,
 				354E65D5258B39EC0014C1E1 /* View Controllers */,
@@ -196,6 +215,7 @@
 				35970DD0258C274800D42A05 /* DataController.swift in Sources */,
 				35970DD9258C691E00D42A05 /* Pin+Extensions.swift in Sources */,
 				354E65C4258B393E0014C1E1 /* TravelLocationsMapViewController.swift in Sources */,
+				351C8BF6258D3DFB007ACA21 /* PhotoAlbumViewControllerCell.swift in Sources */,
 				354E65C0258B393E0014C1E1 /* AppDelegate.swift in Sources */,
 				354E65DD258B3EB20014C1E1 /* PhotoAlbumViewController.swift in Sources */,
 				35970DDD258C694300D42A05 /* Photo+Extensions.swift in Sources */,
