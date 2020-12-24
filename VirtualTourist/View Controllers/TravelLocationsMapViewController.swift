@@ -63,7 +63,6 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
 
     @objc func mapLongPress(longPress: UIGestureRecognizer) {
         if (longPress.state == UIGestureRecognizer.State.began) {
-            print("Long press detected")
             let touchPoint = longPress.location(in: mapView)
             let coordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
 
@@ -113,12 +112,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
     }
 
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        print("regionDidChangeAnimated")
-        print("mapChangedFromUserInteraction: \(mapChangedFromUserInteraction)")
         mapChangedFromUserInteraction = mapViewRegionDidChangeFromUserInteraction()
         if (mapChangedFromUserInteraction) {
-            print(mapView.centerCoordinate)
-            print(mapView.region.span)
             UserDefaults.standard.setValue(mapView.centerCoordinate.latitude, forKey: "latitude")
             UserDefaults.standard.setValue(mapView.centerCoordinate.longitude, forKey: "longitude")
             UserDefaults.standard.setValue(mapView.region.span.latitudeDelta, forKey: "latitudeDelta")
@@ -131,7 +126,6 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
         guard let mapPins = fetchedResultsController?.fetchedObjects else {
             return
         }
-        
         // Loop through pins and add them to map
         for pin in mapPins {
             let storedAnnotation = MKPointAnnotation()
@@ -171,7 +165,15 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate, NSF
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ViewPinPhotos" {
             if let vc = segue.destination as? PhotoAlbumViewController {
-                vc.coordinate = (sender as! MKPointAnnotation).coordinate
+                let coordinate = (sender as! MKPointAnnotation).coordinate
+                let mapPins = fetchedResultsController.fetchedObjects!
+                guard let pinIndex = mapPins.firstIndex(where: { (pin) -> Bool in
+                    pin.latitude == coordinate.latitude && pin.longitude == coordinate.longitude
+                }) else {
+                    return
+                }
+                vc.coordinate = coordinate
+                vc.pin = mapPins[pinIndex]
                 vc.dataController = dataController
             }
         }

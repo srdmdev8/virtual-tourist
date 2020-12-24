@@ -19,6 +19,11 @@
 		35970DD0258C274800D42A05 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35970DCF258C274800D42A05 /* DataController.swift */; };
 		35970DD9258C691E00D42A05 /* Pin+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35970DD8258C691E00D42A05 /* Pin+Extensions.swift */; };
 		35970DDD258C694300D42A05 /* Photo+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35970DDC258C694300D42A05 /* Photo+Extensions.swift */; };
+		35CB774F258D4FBA00069B95 /* VTConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CB774E258D4FBA00069B95 /* VTConstants.swift */; };
+		35CB7758258D65FC00069B95 /* VTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CB7757258D65FC00069B95 /* VTClient.swift */; };
+		35CB775C258D6B0000069B95 /* VTConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CB775B258D6B0000069B95 /* VTConvenience.swift */; };
+		35CB775F258D6B8900069B95 /* VTFlickrPhotosData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CB775E258D6B8900069B95 /* VTFlickrPhotosData.swift */; };
+		35CB7763258D6BE300069B95 /* VTFlickrPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CB7762258D6BE300069B95 /* VTFlickrPhoto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +41,11 @@
 		35970DCF258C274800D42A05 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		35970DD8258C691E00D42A05 /* Pin+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+Extensions.swift"; sourceTree = "<group>"; };
 		35970DDC258C694300D42A05 /* Photo+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+Extensions.swift"; sourceTree = "<group>"; };
+		35CB774E258D4FBA00069B95 /* VTConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VTConstants.swift; sourceTree = "<group>"; };
+		35CB7757258D65FC00069B95 /* VTClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VTClient.swift; sourceTree = "<group>"; };
+		35CB775B258D6B0000069B95 /* VTConvenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VTConvenience.swift; sourceTree = "<group>"; };
+		35CB775E258D6B8900069B95 /* VTFlickrPhotosData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VTFlickrPhotosData.swift; sourceTree = "<group>"; };
+		35CB7762258D6BE300069B95 /* VTFlickrPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VTFlickrPhoto.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +109,7 @@
 		354E65D4258B39D80014C1E1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				35CB7756258D65AE00069B95 /* API Requests */,
 				35970DD7258C68C000D42A05 /* Managed Object Extensions */,
 				354E65D8258B3AAB0014C1E1 /* VirtualTourist.xcdatamodeld */,
 				35970DCF258C274800D42A05 /* DataController.swift */,
@@ -139,6 +150,18 @@
 				35970DDC258C694300D42A05 /* Photo+Extensions.swift */,
 			);
 			path = "Managed Object Extensions";
+			sourceTree = "<group>";
+		};
+		35CB7756258D65AE00069B95 /* API Requests */ = {
+			isa = PBXGroup;
+			children = (
+				35CB774E258D4FBA00069B95 /* VTConstants.swift */,
+				35CB7757258D65FC00069B95 /* VTClient.swift */,
+				35CB775B258D6B0000069B95 /* VTConvenience.swift */,
+				35CB775E258D6B8900069B95 /* VTFlickrPhotosData.swift */,
+				35CB7762258D6BE300069B95 /* VTFlickrPhoto.swift */,
+			);
+			path = "API Requests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,9 +235,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				354E65DA258B3AAB0014C1E1 /* VirtualTourist.xcdatamodeld in Sources */,
+				35CB774F258D4FBA00069B95 /* VTConstants.swift in Sources */,
 				35970DD0258C274800D42A05 /* DataController.swift in Sources */,
+				35CB7763258D6BE300069B95 /* VTFlickrPhoto.swift in Sources */,
 				35970DD9258C691E00D42A05 /* Pin+Extensions.swift in Sources */,
 				354E65C4258B393E0014C1E1 /* TravelLocationsMapViewController.swift in Sources */,
+				35CB775C258D6B0000069B95 /* VTConvenience.swift in Sources */,
+				35CB775F258D6B8900069B95 /* VTFlickrPhotosData.swift in Sources */,
+				35CB7758258D65FC00069B95 /* VTClient.swift in Sources */,
 				351C8BF6258D3DFB007ACA21 /* PhotoAlbumViewControllerCell.swift in Sources */,
 				354E65C0258B393E0014C1E1 /* AppDelegate.swift in Sources */,
 				354E65DD258B3EB20014C1E1 /* PhotoAlbumViewController.swift in Sources */,
